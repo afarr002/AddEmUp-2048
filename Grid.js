@@ -93,6 +93,13 @@ class Cell {
       (this.mergeTile === null && this.tile.value === tile.value)
     );
   }
+
+  mergeTiles() {
+    if (this.tile === null || this.mergeTile === null) return;
+    this.tile.value = this.tile.vlaue + this.mergeTile.value;
+    this.mergeTile.remove();
+    this.mergeTile = null;
+  }
 }
 
 const createCellElements = (gridElement) => {
