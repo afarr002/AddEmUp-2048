@@ -4,15 +4,15 @@ export default class Tile {
   #y;
   #value;
 
-  constructor(tileConatiner, value = Math.random() > 0.5 ? 2 : 4) {
+  constructor(tileContainer, value = Math.random() > 0.5 ? 2 : 4) {
     this.#tileElement = document.createElement("div");
     this.#tileElement.classList.add("tile");
-    tileConatiner.append(this.#tileElement);
+    tileContainer.append(this.#tileElement);
     this.value = value;
   }
 
   get value() {
-    return this.value;
+    return this.#value;
   }
 
   set value(v) {
@@ -26,7 +26,7 @@ export default class Tile {
     );
     this.#tileElement.style.setProperty(
       "--text-lightness",
-      `${textLightness <= 50 ? 90 : 10}%`
+      `${backgroundLightness <= 50 ? 90 : 10}%`
     );
   }
 
