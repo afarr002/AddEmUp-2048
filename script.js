@@ -6,11 +6,6 @@ const gameBoard = document.getElementById("game-board");
 const grid = new Grid(gameBoard);
 grid.randomEmptyCell().tile = new Tile(gameBoard);
 grid.randomEmptyCell().tile = new Tile(gameBoard);
-setupInput();
-
-const setupInput = () => {
-  window.addEventListener("keydown", handleInput, { once: true });
-};
 
 const handleInput = async (e) => {
   switch (e.key) {
@@ -62,20 +57,26 @@ const handleInput = async (e) => {
   setupInput();
 };
 
+const setupInput = () => {
+  window.addEventListener("keydown", handleInput, { once: true });
+};
+
+setupInput();
+
 const moveUp = () => {
-  slideTiles(grid.cellsByColumn);
+  return slideTiles(grid.cellsByColumn);
 };
 
 const moveDown = () => {
-  slideTiles(grid.cellsByColumn.map((column) => [...column].reverse()));
+  return slideTiles(grid.cellsByColumn.map((column) => [...column].reverse()));
 };
 
 const moveLeft = () => {
-  slideTiles(grid.cellsByRow);
+  return slideTiles(grid.cellsByRow);
 };
 
 const moveRight = () => {
-  slideTiles(grid.cellsByRow.map((row) => [...row].reverse()));
+  return slideTiles(grid.cellsByRow.map((row) => [...row].reverse()));
 };
 
 const slideTiles = (cells) => {
@@ -84,16 +85,17 @@ const slideTiles = (cells) => {
       const promises = [];
       for (let i = 1; i < group.length; i++) {
         const cell = group[i];
-        if (cell.tile === null) continue;
+        if (cell.tile == null) continue;
         let lastValidCell;
         for (let j = i - 1; j >= 0; j--) {
           const moveToCell = group[j];
           if (!moveToCell.canAccept(cell.tile)) break;
           lastValidCell = moveToCell;
         }
-        if (lastValidCell !== null) {
+
+        if (lastValidCell != null) {
           promises.push(cell.tile.waitForTransition());
-          if (lastValidCell.tile !== null) {
+          if (lastValidCell.tile != null) {
             lastValidCell.mergeTile = cell.tile;
           } else {
             lastValidCell.tile = cell.tile;
@@ -113,9 +115,11 @@ const canMoveUp = () => {
 const canMoveDown = () => {
   return canMove(grid.cellsByColumn.map((column) => [...column].reverse()));
 };
+
 const canMoveLeft = () => {
   return canMove(grid.cellsByRow);
 };
+
 const canMoveRight = () => {
   return canMove(grid.cellsByRow.map((row) => [...row].reverse()));
 };
@@ -124,7 +128,7 @@ const canMove = (cells) => {
   return cells.some((group) => {
     return group.some((cell, index) => {
       if (index === 0) return false;
-      if (cell.tile === null) return false;
+      if (cell.tile == null) return false;
       const moveToCell = group[index - 1];
       return moveToCell.canAccept(cell.tile);
     });
