@@ -37,10 +37,23 @@ const moveUp = () => {
   slideTiles(grid.cellsByColumn);
 };
 
+const moveDown = () => {
+  slideTiles(grid.cellsByColumn.map((column) => [...column].reverse()));
+};
+
+const moveLeft = () => {
+  slideTiles(grid.cellsByRow);
+};
+
+const moveRight = () => {
+  slideTiles(grid.cellsByRow.map((row) => [...row].reverse()));
+};
+
 const slideTiles = (cells) => {
   cells.forEach((group) => {
     for (let i = 1; i < group.length; i++) {
       const cell = group[i];
+      if (cell.tile === null) continue;
       let lastValidCell;
       for (let j = i - 1; j >= 0; j--) {
         const moveToCell = group[j];
